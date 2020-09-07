@@ -107,10 +107,10 @@
             <plugin>
                 <groupId>com.github.shalousun</groupId>
                 <artifactId>smart-doc-maven-plugin</artifactId>
-                <version>1.9.4</version>
+                <version>1.1.8</version>
                 <configuration>
                     <!--Specify the configuration file used to generate the document-->
-                    <configFile>./src/main/resources/smart-doc.json</configFile>
+                    <configFile>src/main/resources/smart-doc.json</configFile>
                     <!--smart-doc implements automatic analysis of the dependency tree to load the source code of third-party dependencies. If some framework dependency libraries are not loaded, an error is reported, then use excludes to exclude-->
                     <excludes>
                         <!--The format is: groupId: artifactId; refer to the following-->
