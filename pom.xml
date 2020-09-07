@@ -65,11 +65,19 @@
             <artifactId>spring-boot-devtools</artifactId>
             <optional>true</optional>
         </dependency>
+        <!-- mybatis plus -->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
             <version>3.4.0</version>
         </dependency>
+        <!-- swagger依赖 -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-boot-starter</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+
     </dependencies>
     <build>
         <finalName>${project.artifactId}</finalName>
@@ -95,6 +103,35 @@
                         <version>1.4.200</version>
                     </dependency>
                 </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>com.github.shalousun</groupId>
+                <artifactId>smart-doc-maven-plugin</artifactId>
+                <version>1.9.4</version>
+                <configuration>
+                    <!--Specify the configuration file used to generate the document-->
+                    <configFile>./src/main/resources/smart-doc.json</configFile>
+                    <!--smart-doc implements automatic analysis of the dependency tree to load the source code of third-party dependencies. If some framework dependency libraries are not loaded, an error is reported, then use excludes to exclude-->
+                    <excludes>
+                        <!--The format is: groupId: artifactId; refer to the following-->
+                        <exclude>com.google.guava:guava</exclude>
+                    </excludes>
+                    <!--Since version 1.0.8, the plugin provides includes support-->
+                    <!--smart-doc can automatically analyze the dependency tree to load all dependent source code. In principle, it will affect the efficiency of document construction, so you can use includes to let the plugin load the components you configure.-->
+                    <includes>
+                        <!--The format is: groupId: artifactId; refer to the following-->
+                        <include>com.alibaba:fastjson</include>
+                    </includes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <!--Comment out phase if you don't need to start smart-doc when compiling-->
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>html</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
