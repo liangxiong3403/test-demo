@@ -62,4 +62,11 @@ public class IndexController {
     public JSONObject error() {
         throw new ResultException("内部服务器异常,请联系管理员", ResultStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @GetMapping("/debug")
+    public void debug() {
+        for (int i = 0; i < 10; i++) {
+            System.out.println("i=" + i);
+        }
+    }
 }
