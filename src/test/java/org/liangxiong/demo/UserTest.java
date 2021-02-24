@@ -12,6 +12,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.StringJoiner;
+import java.util.stream.Stream;
 
 /**
  * @author liangxiong
@@ -37,5 +39,12 @@ public class UserTest {
         Assertions.assertEquals(username, tom.getName());
         Integer count = userMapper.selectCount(null);
         Assertions.assertEquals(5, count);
+    }
+
+    @Test
+    public void testConcatString() {
+        StringJoiner joiner = new StringJoiner(",");
+        Stream.of("1", "2", "3", "5", "6").forEach(joiner::add);
+        System.out.println(joiner.toString());
     }
 }
