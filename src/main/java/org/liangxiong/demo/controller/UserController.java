@@ -49,9 +49,7 @@ public class UserController {
 
     @DeleteMapping("/batchDelete")
     public Boolean batchDelete(@RequestBody List<Long> ids) {
-        QueryWrapper<User> wrapper = new QueryWrapper<>();
-        wrapper.in("id", ids);
-        return userMapper.batchDeleteWithFill(User.builder().build(), wrapper) > 0;
+        return userMapper.batchDeleteWithFill(User.builder().ids(ids).build()) > 0;
     }
 
     @PutMapping("/update")
