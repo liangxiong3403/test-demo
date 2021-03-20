@@ -44,6 +44,20 @@ public class UserController {
     public Boolean delete(@RequestParam Long id) {
         QueryWrapper<User> wrapper = new QueryWrapper<>();
         wrapper.eq("ID", id);
-        return userMapper.delete(wrapper) == 1;
+        return userMapper.deleteByIdWithFill(User.builder().id(id).build()) == 1;
+    }
+
+    @DeleteMapping("/batchDelete")
+    public Boolean batchDelete(@RequestBody List<Long> ids) {
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.in("id", ids);
+        return userMapper.batchDeleteWithFill(User.builder().build(), wrapper) > 0;
+    }
+
+    @PutMapping("/update")
+    public Boolean delete(@RequestBody User user) {
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.eq("ID", user.getId());
+        return userMapper.update(user, wrapper) == 1;
     }
 }

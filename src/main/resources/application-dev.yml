@@ -9,6 +9,7 @@ server:
 mybatis-plus:
     # 枚举包扫描
     type-enums-package: org.liangxiong.demo.enums
+    mapper-locations: classpath*:/mapper/**/*.xml
     global-config:
         db-config:
             logic-delete-field: deleted

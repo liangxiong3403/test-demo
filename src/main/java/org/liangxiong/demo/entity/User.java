@@ -43,6 +43,9 @@ public class User {
      */
     private String email;
 
+    /**
+     * 数据库最好使用int类型;虽然高版本mybatis-plus可以识别数据库tinyint类型的枚举
+     */
     private SexEnum gender;
 
     @JsonIgnore
@@ -63,4 +66,9 @@ public class User {
 
     @TableField(fill = FieldFill.UPDATE)
     private String updatedBy;
+
+    /**
+     * 租户id
+     */
+    private Long tenantId;
 }
