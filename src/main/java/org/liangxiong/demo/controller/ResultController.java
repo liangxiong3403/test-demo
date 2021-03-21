@@ -111,6 +111,7 @@ public class ResultController implements ResponseBodyAdvice<Object> {
      */
     private ResponseEntity<Result<?>> handlerExceptionInternal(Exception exception, Result<?> body, HttpHeaders headers, HttpStatus status, WebRequest webRequest) {
         if (HttpStatus.INTERNAL_SERVER_ERROR.equals(status)) {
+            exception.printStackTrace();
             webRequest.setAttribute(WebUtils.ERROR_EXCEPTION_ATTRIBUTE, exception, WebRequest.SCOPE_REQUEST);
         }
         return new ResponseEntity<>(body, headers, status);

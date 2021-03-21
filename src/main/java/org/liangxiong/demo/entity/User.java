@@ -3,9 +3,7 @@ package org.liangxiong.demo.entity;
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.liangxiong.demo.enums.SexEnum;
 
 import java.time.LocalDateTime;
@@ -21,6 +19,8 @@ import java.util.List;
 @Getter
 @Setter
 @TableName("user")
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
 
     /**
