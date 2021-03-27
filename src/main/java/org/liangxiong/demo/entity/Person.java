@@ -2,6 +2,7 @@ package org.liangxiong.demo.entity;
 
 
 import lombok.*;
+import lombok.experimental.Accessors;
 
 /**
  * @author liangxiong
@@ -14,9 +15,8 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Person {
-
-    private int id;
+@Accessors(chain = true)
+public class Person extends BaseEntity {
 
     private String title;
 

@@ -26,11 +26,12 @@ public class PersonTest {
     public void testGetData() throws SQLException {
         ResultSet resultSet = dataSource.getConnection().createStatement().executeQuery("SELECT id,title,firstName,lastName FROM person");
         while (resultSet.next()) {
-            int id = resultSet.getInt(1);
+            long id = resultSet.getLong(1);
             String title = resultSet.getString(2);
             String firstName = resultSet.getString(3);
             String lastName = resultSet.getString(4);
-            Person person = Person.builder().id(id).title(title).firstName(firstName).lastName(lastName).build();
+            Person person = Person.builder().title(title).firstName(firstName).lastName(lastName).build();
+            person.setId(id);
             Assertions.assertEquals(person.getId(), 1);
         }
     }

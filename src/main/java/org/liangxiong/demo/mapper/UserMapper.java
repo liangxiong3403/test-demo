@@ -1,6 +1,5 @@
 package org.liangxiong.demo.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.liangxiong.demo.entity.User;
 
 /**
@@ -9,10 +8,6 @@ import org.liangxiong.demo.entity.User;
  * @date 2020-09-06 13:55
  * @description
  **/
-public interface UserMapper extends BaseMapper<User> {
-
-    Integer deleteByIdWithFill(User user);
-
-    Integer batchDeleteWithFill(User user);
+public interface UserMapper extends DiyBaseMapper<User> {
 
 }
