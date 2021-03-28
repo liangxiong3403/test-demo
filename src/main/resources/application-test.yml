@@ -6,3 +6,6 @@ spring:
         password:
         schema: classpath:schema/*.sql
         data: classpath:data/*.sql
+j2cache:
+    config-location: /j2cache.properties
+    redisClient: lettuce
