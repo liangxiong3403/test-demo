@@ -11,10 +11,13 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.metadata.property.StyleProperty;
+import com.alibaba.excel.write.metadata.style.WriteCellStyle;
+import com.alibaba.excel.write.style.HorizontalCellStyleStrategy;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.poi.ss.usermodel.ExcelStyleDateFormatter;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.liangxiong.demo.dto.UserDTO;
 import org.liangxiong.demo.entity.User;
@@ -28,6 +31,8 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
@@ -110,7 +115,10 @@ public class UserController {
         response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + fileName + ".xls");
         List<User> data = list();
         ServletOutputStream outputStream = response.getOutputStream();
-        EasyExcel.write(outputStream, User.class).sheet("模板").doWrite(data);
+        StyleProperty styleProperty = new StyleProperty();
+        styleProperty.setFillBackgroundColor(IndexedColors.YELLOW.getIndex());
+        EasyExcel.write(outputStream, User.class).sheet("模板")
+                .registerWriteHandler(new HorizontalCellStyleStrategy(WriteCellStyle.build(styleProperty, null), Collections.emptyList())).doWrite(data);
     }
 
     @ApiOperation("easyPOI导入")
@@ -155,8 +163,9 @@ public class UserController {
 
     @PostMapping("/format")
     public String format(@RequestBody UserDTO dto) {
+        String pattern = "yyyy-MM-dd HH:mm:ss";
         return String.join("-",
-                DateUtil.beginOfDay(dto.getStartTime()).toString(new ExcelStyleDateFormatter("yyyy-MM-dd HH:mm:ss")),
-                DateUtil.endOfDay(dto.getStartTime()).toString(new ExcelStyleDateFormatter("yyyy-MM-dd HH:mm:ss")));
+                DateUtil.beginOfDay(dto.getStartTime()).toString(pattern),
+                DateUtil.endOfDay(dto.getEndTime()).toString(pattern));
     }
 }

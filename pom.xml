@@ -224,7 +224,23 @@
                     <groupId>com.google.errorprone</groupId>
                     <artifactId>error_prone_annotations</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>io.swagger</groupId>
+                    <artifactId>swagger-annotations</artifactId>
+                </exclusion>
             </exclusions>
+        </dependency>
+        <!-- 处理swagger-annotations冲突 -->
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>1.6.2</version>
+        </dependency>
+        <!-- 处理knife4j导致的原生swagger-ui/index.html丢失 -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>3.0.0</version>
         </dependency>
 
     </dependencies>
@@ -243,12 +259,15 @@
             <plugin>
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-maven-plugin</artifactId>
-                <version>6.5.5</version>
+                <version>7.7.2</version>
                 <configuration>
-                    <url>jdbc:mysql://localhost:3306/test1?serverTimezone=Asia/Shanghai</url>
+                    <url>jdbc:mysql://localhost:3306/history?serverTimezone=Asia/Shanghai</url>
                     <user>root</user>
                     <password>admin</password>
                     <driver>com.mysql.cj.jdbc.Driver</driver>
+                    <locations>
+                        <location>filesystem:${basedir}/src/main/resources/db/migration/</location>
+                    </locations>
                 </configuration>
                 <dependencies>
                     <dependency>

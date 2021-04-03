@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
@@ -14,7 +15,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * @author liangxiong
  * @version 1.0.0
  * @date 2021-04-01 20:57
- * @description
+ * @description 配置不是必须地;主要用于微服务情况不同模块的服务分组
  **/
 @Configuration
 @EnableSwagger2
@@ -23,13 +24,7 @@ public class Knife4jConfiguration {
     @Bean(value = "defaultApi2")
     public Docket defaultApi2() {
         Docket docket = new Docket(DocumentationType.SWAGGER_2)
-                .apiInfo(new ApiInfoBuilder()
-                        //.title("swagger-bootstrap-ui-demo RESTful APIs")
-                        .description("# swagger-bootstrap-ui-demo RESTful APIs")
-                        .termsOfServiceUrl("http://localhost:18083")
-                        .contact(new Contact("liangxiong", "http://blog.liangxiong.org", "1720711743@qq.com"))
-                        .version("1.0")
-                        .build())
+                .apiInfo(getApiInfo())
                 //分组名称
                 .groupName("test-demo")
                 .select()
@@ -38,5 +33,15 @@ public class Knife4jConfiguration {
                 .paths(PathSelectors.any())
                 .build();
         return docket;
+    }
+
+    private ApiInfo getApiInfo() {
+        return new ApiInfoBuilder()
+                //.title("swagger-bootstrap-ui-demo RESTful APIs")
+                .description("# swagger-bootstrap-ui-demo RESTful APIs")
+                .termsOfServiceUrl("http://localhost:18083")
+                .contact(new Contact("liangxiong", "http://blog.liangxiong.org", "1720711743@qq.com"))
+                .version("1.0")
+                .build();
     }
 }
