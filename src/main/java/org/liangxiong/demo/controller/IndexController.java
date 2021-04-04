@@ -5,6 +5,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.liangxiong.demo.annotation.ResultResponseBody;
 import org.liangxiong.demo.constants.ResultStatus;
 import org.liangxiong.demo.exception.ResultException;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(tags = "主页控制器")
 @RestController
 @RequestMapping("/index")
+@Slf4j
 public class IndexController {
 
     /**
@@ -33,6 +35,7 @@ public class IndexController {
     @GetMapping("/hello")
     @ApiImplicitParams({@ApiImplicitParam(name = "username", value = "用户名"), @ApiImplicitParam(name = "age", value = "年龄")})
     public String hello(String username, Integer age) {
+        log.info("username: {}, age: {}", username, age);
         return "swagger say: hello: " + username + ":" + age;
     }
 

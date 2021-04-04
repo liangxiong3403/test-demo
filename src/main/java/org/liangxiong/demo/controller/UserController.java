@@ -4,7 +4,6 @@ import cn.afterturn.easypoi.excel.ExcelExportUtil;
 import cn.afterturn.easypoi.excel.ExcelImportUtil;
 import cn.afterturn.easypoi.excel.entity.ExportParams;
 import cn.afterturn.easypoi.excel.entity.ImportParams;
-import cn.afterturn.easypoi.pdf.PdfExportUtil;
 import cn.afterturn.easypoi.pdf.entity.PdfExportParams;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
@@ -12,16 +11,17 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.metadata.property.StyleProperty;
-import com.alibaba.excel.write.metadata.style.WriteCellStyle;
-import com.alibaba.excel.write.style.HorizontalCellStyleStrategy;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.liangxiong.demo.dto.UserDTO;
 import org.liangxiong.demo.entity.User;
+import org.liangxiong.demo.handler.CustomerWriteHandler;
 import org.liangxiong.demo.listener.UploadUserListener;
+import org.liangxiong.demo.pdf.enhance.ChinesePdfExportUtil;
 import org.liangxiong.demo.service.IUserService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,8 +31,6 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
@@ -46,6 +44,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/user")
 @RestController
 @Api(tags = "用户管理")
+@Slf4j
 public class UserController {
 
     @Resource
@@ -55,7 +54,7 @@ public class UserController {
     @ApiOperation("列表查询")
     public List<User> list() {
         QueryWrapper<User> wrapper = new QueryWrapper<>();
-        wrapper.lt("ID", ThreadLocalRandom.current().nextInt(0, 100));
+        wrapper.lt("ID", ThreadLocalRandom.current().nextInt(50, 100));
         return userService.list(wrapper);
     }
 
@@ -118,7 +117,7 @@ public class UserController {
         StyleProperty styleProperty = new StyleProperty();
         styleProperty.setFillBackgroundColor(IndexedColors.YELLOW.getIndex());
         EasyExcel.write(outputStream, User.class).sheet("模板")
-                .registerWriteHandler(new HorizontalCellStyleStrategy(WriteCellStyle.build(styleProperty, null), Collections.emptyList())).doWrite(data);
+                .registerWriteHandler(new CustomerWriteHandler()).doWrite(data);
     }
 
     @ApiOperation("easyPOI导入")
@@ -147,18 +146,24 @@ public class UserController {
         return "success";
     }
 
+    /**
+     * notice:PDF内容宽度或者单元格高度设置不当会导致内容缺失
+     *
+     * @param response
+     */
     @GetMapping("/exportPdfByEasyPoi")
-    public void exportPdfByEasyPoi(HttpServletResponse response) throws IOException {
+    public void exportPdfByEasyPoi(HttpServletResponse response) {
         response.setContentType("application/pdf");
         response.setCharacterEncoding("utf-8");
-        String fileName = URLEncoder.encode("用户数据", "UTF-8").replaceAll("\\+", "%20");
-        response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + fileName + ".pdf");
-        List<User> data = list();
-        ServletOutputStream outputStream = response.getOutputStream();
-        PdfExportParams pdfExportParams = new PdfExportParams();
-        pdfExportParams.setTitle("用户数据");
-        pdfExportParams.setTitleHeight((short) 20);
-        PdfExportUtil.exportPdf(pdfExportParams, User.class, data, outputStream);
+        try (ServletOutputStream outputStream = response.getOutputStream()) {
+            String fileName = URLEncoder.encode("用户数据", "UTF-8").replaceAll("\\+", "%20");
+            response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + fileName + ".pdf");
+            List<User> data = list();
+            PdfExportParams pdfExportParams = new PdfExportParams();
+            ChinesePdfExportUtil.exportPdf(pdfExportParams, User.class, data, outputStream);
+        } catch (IOException e) {
+            log.error("export pdf error: {}", e.getMessage());
+        }
     }
 
     @PostMapping("/format")
