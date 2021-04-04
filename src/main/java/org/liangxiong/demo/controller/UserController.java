@@ -152,6 +152,7 @@ public class UserController {
      * @param response
      */
     @GetMapping("/exportPdfByEasyPoi")
+    @ApiOperation("PDF导出")
     public void exportPdfByEasyPoi(HttpServletResponse response) {
         response.setContentType("application/pdf");
         response.setCharacterEncoding("utf-8");
