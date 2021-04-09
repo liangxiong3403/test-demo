@@ -18,6 +18,9 @@
         <java.version>1.8</java.version>
         <!-- 版本过高,bug就是插件不会执行测试类 -->
         <maven-surefire-plugin.version>2.21.0</maven-surefire-plugin.version>
+        <flyway.version>7.7.2</flyway.version>
+        <liquibase.version>4.3.2</liquibase.version>
+        <fastjson.version>1.2.76</fastjson.version>
     </properties>
 
     <dependencies>
@@ -82,7 +85,7 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.2.73</version>
+            <version>${fastjson.version}</version>
         </dependency>
         <dependency>
             <groupId>org.redisson</groupId>
@@ -163,7 +166,7 @@
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
-            <version>5.6.1</version>
+            <version>5.6.2</version>
         </dependency>
         <dependency>
             <groupId>net.oschina.j2cache</groupId>
@@ -243,6 +246,40 @@
             <artifactId>springfox-swagger-ui</artifactId>
             <version>3.0.0</version>
         </dependency>
+        <!-- FlywayAutoConfiguration -->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>${flyway.version}</version>
+        </dependency>
+        <!-- generat test id card and telephone -->
+        <dependency>
+            <groupId>com.github.binarywang</groupId>
+            <artifactId>java-testdata-generator</artifactId>
+            <version>1.1.2</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>guava</artifactId>
+                    <groupId>com.google.guava</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>io.github.mouzt</groupId>
+            <artifactId>bizlog-sdk</artifactId>
+            <version>1.0.3</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.guava</groupId>
+                    <artifactId>guava</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!--<dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>${liquibase.version}</version>
+        </dependency>-->
 
     </dependencies>
     <build>
@@ -260,23 +297,28 @@
             <plugin>
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-maven-plugin</artifactId>
-                <version>7.7.2</version>
+                <version>${flyway.version}</version>
                 <configuration>
-                    <url>jdbc:mysql://localhost:3306/history?serverTimezone=Asia/Shanghai</url>
+                    <url>jdbc:mysql://localhost:3306/test?serverTimezone=Asia/Shanghai</url>
                     <user>root</user>
                     <password>admin</password>
                     <driver>com.mysql.cj.jdbc.Driver</driver>
                     <locations>
+                        <!-- 特别注意文件名称是大写字幕V+双下划线,比如:V1__user.sql -->
                         <location>filesystem:${basedir}/src/main/resources/db/migration/</location>
                     </locations>
                 </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.h2database</groupId>
-                        <artifactId>h2</artifactId>
-                        <version>1.4.200</version>
-                    </dependency>
-                </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>${liquibase.version}</version>
+                <configuration>
+                    <url>jdbc:mysql://localhost:3306/test?serverTimezone=Asia/Shanghai</url>
+                    <username>root</username>
+                    <password>admin</password>
+                    <driver>com.mysql.cj.jdbc.Driver</driver>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>com.github.shalousun</groupId>
