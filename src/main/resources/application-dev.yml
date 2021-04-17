@@ -23,3 +23,15 @@ logging:
 j2cache:
     config-location: /j2cache.properties
     redisClient: lettuce
+nacos:
+    discovery:
+        # 自动注册服务
+        auto-register: true
+    config:
+        # 自动刷新能力开启,配合@NacosValue(autoRefreshed = true)注解使用
+        auto-refresh: true
+        data-id: ${spring.application.name}
+        type: yaml
+        bootstrap:
+            # 服务启动时拉取远程配置文件
+            enable: true

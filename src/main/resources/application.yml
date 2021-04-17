@@ -4,3 +4,5 @@ spring:
     devtools:
         restart:
             enabled: off
+    application:
+        name: test-demo

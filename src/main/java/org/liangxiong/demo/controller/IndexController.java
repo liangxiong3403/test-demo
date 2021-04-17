@@ -1,6 +1,11 @@
 package org.liangxiong.demo.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.nacos.api.annotation.NacosInjected;
+import com.alibaba.nacos.api.config.annotation.NacosValue;
+import com.alibaba.nacos.api.exception.NacosException;
+import com.alibaba.nacos.api.naming.NamingService;
+import com.alibaba.nacos.api.naming.pojo.Instance;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -11,7 +16,10 @@ import org.liangxiong.demo.constants.ResultStatus;
 import org.liangxiong.demo.exception.ResultException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * @author liangxiong
@@ -24,6 +32,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/index")
 @Slf4j
 public class IndexController {
+
+    @NacosInjected
+    private NamingService namingService;
+
+    @NacosValue(value = "${rocketmq.accessKeyId}", autoRefreshed = true)
+    private String accessKeyId;
+
+    @NacosValue(value = "${rocketmq.accessKeySecret}", autoRefreshed = true)
+    private String accessKeySecret;
+
+    @GetMapping("/get")
+    public List<Instance> get(@RequestParam String serviceName) throws NacosException {
+        return namingService.getAllInstances(serviceName);
+    }
 
     /**
      * hello 方法
@@ -71,5 +93,10 @@ public class IndexController {
         for (int i = 0; i < 10; i++) {
             System.out.println("i=" + i);
         }
+    }
+
+    @GetMapping("/config")
+    public String getConfig() {
+        return String.join(":", accessKeyId, accessKeySecret);
     }
 }
