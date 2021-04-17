@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
+    <changeSet id="1" author="xiangqian">
+        <update tableName="user">
+            <column name="ID" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="NAME" type="varchar(32)"/>
+            <column name="AGE" type="int(3)"/>
+            <column name="EMAIL" type="varchar(64)"/>
+            <column name="GENDER" type="int(2)"/>
+            <column name="DELETED" type="tinyint(1)"/>
+            <column name="CREATED_TIME" type="datetime"/>
+            <column name="UPDATED_TIME" type="datetime"/>
+            <column name="UPDATED_BY" type="varchar(32)"/>
+            <column name="CREATED_BY" type="varchar(32)"/>
+            <column name="TENANT_ID" type="bigint"/>
+        </update>
+    </changeSet>
+</databaseChangeLog>

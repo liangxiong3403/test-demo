@@ -314,12 +314,11 @@
             <artifactId>nacos-discovery-spring-boot-starter</artifactId>
             <version>${nacos-boot.version}</version>
         </dependency>
-
-        <!--<dependency>
+        <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
             <version>${liquibase.version}</version>
-        </dependency>-->
+        </dependency>
 
     </dependencies>
     <build>
