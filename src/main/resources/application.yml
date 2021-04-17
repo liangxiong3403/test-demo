@@ -6,3 +6,6 @@ spring:
             enabled: off
     application:
         name: test-demo
+rocketmq:
+    topic: user_update
+    groupId: GID_USER_INFO
