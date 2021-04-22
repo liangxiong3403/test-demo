@@ -78,7 +78,6 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.23</version>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
@@ -121,17 +120,20 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!-- 热部署插件 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <optional>true</optional>
         </dependency>
+        <!-- PDF处理 -->
         <dependency>
             <groupId>com.itextpdf</groupId>
             <artifactId>itext7-core</artifactId>
             <version>7.1.14</version>
             <type>pom</type>
         </dependency>
+        <!-- POI增强 -->
         <dependency>
             <groupId>cn.afterturn</groupId>
             <artifactId>easypoi-spring-boot-starter</artifactId>
@@ -147,6 +149,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!-- excel增强 -->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>easyexcel</artifactId>
@@ -166,11 +169,13 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!-- 工具类封装 -->
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
             <version>5.6.2</version>
         </dependency>
+        <!-- 二级缓存框架 -->
         <dependency>
             <groupId>net.oschina.j2cache</groupId>
             <artifactId>j2cache-spring-boot2-starter</artifactId>
@@ -201,6 +206,7 @@
             <artifactId>objenesis</artifactId>
             <version>3.2</version>
         </dependency>
+        <!-- jedis客户端 -->
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
@@ -217,6 +223,7 @@
             <artifactId>commons-pool2</artifactId>
             <version>2.9.0</version>
         </dependency>
+        <!-- ConfigurationProperties注解文件生成metadata.json文件 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
@@ -285,11 +292,13 @@
             <artifactId>emoji-java</artifactId>
             <version>5.1.1</version>
         </dependency>
+        <!-- 阿里云lib -->
         <dependency>
             <groupId>com.aliyun.openservices</groupId>
             <artifactId>ons-client</artifactId>
             <version>${ons-client.version}</version>
         </dependency>
+        <!-- nacos config -->
         <dependency>
             <groupId>com.alibaba.boot</groupId>
             <artifactId>nacos-config-spring-boot-starter</artifactId>
@@ -309,11 +318,13 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!-- nacos discovery -->
         <dependency>
             <groupId>com.alibaba.boot</groupId>
             <artifactId>nacos-discovery-spring-boot-starter</artifactId>
             <version>${nacos-boot.version}</version>
         </dependency>
+        <!-- liquibase for db version log -->
         <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
