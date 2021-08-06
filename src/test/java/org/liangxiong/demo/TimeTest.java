@@ -1,8 +1,17 @@
 package org.liangxiong.demo;
 
-import java.time.*;
+import cn.hutool.core.date.DateUnit;
+import cn.hutool.core.date.DateUtil;
+
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.MonthDay;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -14,7 +23,9 @@ import java.util.Locale;
 public class TimeTest {
 
     public static void main(String[] args) {
-        testLocalTime();
+        Date startTime = DateUtil.parseDateTime("2021-08-06 12:20:00").toJdkDate();
+        System.out.println("startTime: " + startTime);
+        testBetween(startTime);
     }
 
     private static void testInstant() {
@@ -50,5 +61,11 @@ public class TimeTest {
         System.out.println(LocalTime.MIDNIGHT);
         System.out.println(LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss", Locale.CHINA)));
         System.out.println(LocalTime.now().plus(1, ChronoUnit.HOURS));
+    }
+
+    private static void testBetween(Date realEndDate) {
+        long intervalHours = DateUtil.between(realEndDate, new Date(), DateUnit.HOUR);
+        System.out.println("intervalHours: " + intervalHours);
+        System.out.println("isSameDay: " + DateUtil.isSameDay(realEndDate, new Date()));
     }
 }
