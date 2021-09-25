@@ -1,6 +1,8 @@
 package org.liangxiong.demo.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import org.liangxiong.demo.entity.User;
 import org.liangxiong.demo.mapper.UserMapper;
 import org.liangxiong.demo.service.IUserService;
@@ -30,4 +32,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         return userMapper.batchDeleteWithFill(user);
     }
 
+    @Override
+    public boolean remove(Wrapper<User> queryWrapper) {
+        // 此处填充修改人和修改时间
+        return SqlHelper.retBool(userMapper.delete(queryWrapper, null, null));
+    }
 }

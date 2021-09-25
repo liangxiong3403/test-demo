@@ -114,6 +114,8 @@ public class MyBatisConfig implements MetaObjectHandler {
             methodList.add(new LogicDeleteByIdWithFill());
             // 根据id逻辑批量删除并自动填充字段
             methodList.add(new LogicBatchDeleteWithFill());
+            // 覆盖默认地BaseMapper.delete(Wrapper wrapper)方法
+            methodList.add(0, new LogicDeleteByWrapperWithFill());
             return methodList;
         }
     }
