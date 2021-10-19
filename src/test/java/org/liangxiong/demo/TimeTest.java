@@ -1,7 +1,10 @@
 package org.liangxiong.demo;
 
+import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.StrUtil;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -13,6 +16,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @author liangxiong
@@ -26,6 +30,7 @@ public class TimeTest {
         Date startTime = DateUtil.parseDateTime("2021-08-06 12:20:00").toJdkDate();
         System.out.println("startTime: " + startTime);
         testBetween(startTime);
+        testRestTime();
     }
 
     private static void testInstant() {
@@ -67,5 +72,28 @@ public class TimeTest {
         long intervalHours = DateUtil.between(realEndDate, new Date(), DateUnit.HOUR);
         System.out.println("intervalHours: " + intervalHours);
         System.out.println("isSameDay: " + DateUtil.isSameDay(realEndDate, new Date()));
+    }
+
+    private static void testRestTime() {
+        AtomicBoolean push = new AtomicBoolean(true);
+        DateTime now = DateUtil.parseTime(DateUtil.format(new Date(), DatePattern.NORM_TIME_FORMAT.getPattern()));
+        String trendNotDisturbStartTime = "21:00:00";
+        String trendNotDisturbEndTime = "07:00:00";
+        if (StrUtil.isNotEmpty(trendNotDisturbStartTime) && StrUtil.isNotEmpty(trendNotDisturbEndTime)) {
+            DateTime limitStart = DateUtil.parseTime(trendNotDisturbStartTime);
+            DateTime limitEnd = DateUtil.parseTime(trendNotDisturbEndTime);
+            if (limitEnd.isBefore(limitStart)) {
+                // 18:42:05 - 09:42:05
+                int hourOfNow = now.hour(true);
+                boolean noDisturb = (now.isAfterOrEquals(limitStart) && hourOfNow <= 24) || (hourOfNow >= 0 && now.isBeforeOrEquals(limitEnd));
+                if (noDisturb) {
+                    push.set(false);
+                }
+            } else if (now.isIn(limitStart, limitEnd)) {
+                // 09:42:05 - 18:42:05
+                push.set(false);
+            }
+        }
+        System.out.println(push.get());
     }
 }
